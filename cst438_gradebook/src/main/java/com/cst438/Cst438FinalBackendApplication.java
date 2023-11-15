@@ -10,10 +10,10 @@ import com.cst438.services.RegistrationServiceMQ;
 import com.cst438.services.RegistrationServiceREST;
 
 @SpringBootApplication
-public class Cst438GradebookApplication  {
+public class Cst438FinalBackendApplication  {
 
 	public static void main(String[] args) throws InterruptedException {
-		SpringApplication.run(Cst438GradebookApplication.class, args);
+		SpringApplication.run(Cst438FinalBackendApplication.class, args);
 	}
 
 }
