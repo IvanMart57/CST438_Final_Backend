@@ -20,10 +20,13 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
+import com.cst438.domain.Like;
+import com.cst438.domain.LikeRepository;
 import com.cst438.domain.User;
 import com.cst438.domain.UserRepository;
 import com.cst438.dto.AccountCredentials;
 import com.cst438.dto.UserDTO;
+import com.cst438.dto.likeDTO;
 
 @RestController
 @CrossOrigin 
@@ -33,6 +36,9 @@ public class ProfileController {
 	@Autowired
 	UserRepository userRepository;
 	
+	@Autowired
+	LikeRepository likeRepository;
+	
 	@GetMapping("/profile")
 	public UserDTO getProfile(Principal principal ) {
 		String userString = principal.getName();
@@ -41,5 +47,27 @@ public class ProfileController {
 		UserDTO dto = new UserDTO(currentUser.getId(), currentUser.getAlias(), currentUser.getEmail(), currentUser.getPassword(), currentUser.getRole());
 		System.out.println(dto);
 		return dto;
+	}
+	
+	@GetMapping("/likes")
+	public likeDTO[] getLikes(Principal principal ) {
+		String userString = principal.getName();
+		User currentUser = userRepository.findByAlias(userString);
+		
+		List<Like> likes = (List<Like>) likeRepository.findAll();
+		likeDTO[] result = new likeDTO[likes.size()];
+		for (int i=0; i<likes.size(); i++) {
+			Like li = likes.get(i);
+			likeDTO dto = new likeDTO(
+					li.getLikeId(), 
+					li.getId(), 
+					li.getDrinkId(), 
+					li.getDrinkStr(), 
+					li.getDrinkImg());
+			result[i]=dto;
+			System.out.println(dto);
+		}
+//		System.out.println(dto);
+		return result;
 	}
 }
